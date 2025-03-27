@@ -1,16 +1,16 @@
 // src/components/ResumeDownload.tsx
 import React from 'react';
+import resumePdf from '../assets/deepakde-Re.pdf';
 
 const ResumeDownload: React.FC = () => {
   const handleDownload = () => {
-    const resumeUrl = 'deepakde-Re.pdf'; // Ensure the resume is in the "public" folder
     const link = document.createElement('a');
-    link.href = resumeUrl;
+    link.href = resumePdf;
     link.download = 'Deepak_Resume.pdf';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  };
+  };  
 
   return (
     <div className="flex justify-center items-center my-8">
