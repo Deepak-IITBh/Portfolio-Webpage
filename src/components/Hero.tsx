@@ -27,14 +27,21 @@ export default function Hero() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-white"
           >
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-100">
-              Deepak – Data Scientist & AI Enthusiast
-            </h1>
+    <h1 className="text-4xl md:text-6xl font-bold mb-6">
+  <span className="block bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-100">
+    Deepak
+  </span>
+  <span className="text-3xl md:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-100">
+    Passionate Data Scientist
+  </span>
+</h1>
+
+
+
+
             
-            <p className="text-lg mb-8 text-gray-100">
-              I'm a 3rd-year BTech student at IIT Bhilai specializing in Data Science and AI, 
-              passionate about solving problems with Machine Learning, Computer Vision, and 
-              innovative technologies.
+<p className="text-lg mb-8 text-gray-100 font-bold">
+            Hi, I'm Deepak, a 3rd-year BTech student at IIT Bhilai, specializing in Data Science and Artificial Intelligence. I am deeply passionate about leveraging Machine Learning, AI, Computer Vision, and Large Language Models (LLMs) to solve real-world problems and build innovative solutions. With a strong foundation in data-driven methodologies and hands-on experience across these advanced domains, I am eager to apply my technical expertise and problem-solving mindset to deliver impactful and scalable solutions..
             </p>
             
             <motion.button

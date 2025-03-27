@@ -170,17 +170,15 @@ Extracurriculars
       className="py-20 bg-gray-50"
     >
       <div className="max-w-4xl mx-auto px-4">
-        <h2 className="text-4xl font-bold text-gray-800 mb-8 text-center">About Me</h2>
+        <h2 className="text-5xl font-bold text-gray-800 mb-8 text-center">AI-Powered Resume Assistant</h2>
 
         <motion.p 
           className="text-lg text-gray-600 leading-relaxed"
           initial={{ y: 20 }}
           whileInView={{ y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.7 }}
         >
-          Hi, I'm Deepak, a 3rd-year BTech student at IIT Bhilai, specializing in Data Science and Artificial Intelligence. 
-          My passion lies in Data Science, Machine Learning, AI, and Computer Vision, where I enjoy solving 
-          problems and building innovative solutions.
+          I have integrated an AI-powered chatbot trained on my resume, allowing you to explore my skills, experience, and projects through interactive conversations.
         </motion.p>
 
         {/* Query Input and Button */}
