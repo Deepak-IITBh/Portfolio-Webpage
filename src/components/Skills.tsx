@@ -146,7 +146,7 @@ import { Code2, PenTool as Tool, Users } from 'lucide-react';
 const skills = {
   "Programming & Scripting": {
     icon: Code2,
-    skills: ["Python", "C", "C++", "SQL", "HTML", "CSS"]
+    skills: ["Python", "C", "C++", "SQL", "HTML", "CSS", "typescript", "javascript"]
   },
   "Tools & Libraries": {
     icon: Tool,
