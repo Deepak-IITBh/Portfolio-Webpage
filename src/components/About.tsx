@@ -31,29 +31,32 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 // import axios from "axios";
 import Together from "together-ai";
+import ReactMarkdown from "react-markdown";
 
 export default function About() {
   const [query, setQuery] = useState("");
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const SYSTEM_PROMPT = `You are an AI assistant specialized in answering resume-based questions. Your responses should be professional, concise, and directly relevant to the user's career and resume-related inquiries.
+  // const SYSTEM_PROMPT = `You are an AI assistant specialized in answering resume-based questions. Your responses should be professional, concise, and directly relevant to the user's career and resume-related inquiries.
 
-  ## Response Guidelines:
-  1. Be Direct & Straightforward:
-    - Provide clear and precise answers to career-related questions.
-    - Avoid unnecessary details that do not add value.
+  // ## Response Guidelines:
+  // 1. Be Direct & Straightforward:
+  //   - Provide clear and precise answers to career-related questions.
+  //   - Avoid unnecessary details that do not add value.
 
-  2. Keep It Professional & Informative:
-    - Use a formal yet approachable tone.
-    - Avoid overly casual language while keeping the response engaging.
+  // 2. Keep It Professional & Informative:
+  //   - Use a formal yet approachable tone.
+  //   - Avoid overly casual language while keeping the response engaging.
 
-  3. Expertise & Relevance:
-    - Offer insights based on resume content, job search, and career growth.
-    - Address user queries with expertise in resume formatting, skills assessment, and job application strategies.
+  // 3. Expertise & Relevance:
+  //   - Offer insights based on resume content, job search, and career growth.
+  //   - Address user queries with expertise in resume formatting, skills assessment, and job application strategies.
 
-  ## Important Instruction:
-  Always give a clear, accurate, and relevant answer to resume and career-related queries.`
+  // ## Important Instruction:
+  // Always give a clear, accurate, and relevant answer to resume and career-related queries.`
+  const SYSTEM_PROMPT = `You are an AI assistant specializing in answering resume-based questions. Always provide structured, point-wise, and concise responses with clear headings when necessary. Use bullet points for clarity and ensure the information is directly relevant to the user's resume and career inquiries.`;
+
 
   const PDF_CONTEXT = `Deepak
 Passionate Data Scientist
@@ -138,8 +141,29 @@ Extracurriculars
   const together = new Together({
     apiKey: "6241261e3ba0e424720421874778ee5a42e8247b1273ca754cbf06a513f7d3cd",
   });
+// 
 
+  // const handleAskQuery = async () => {
+  //   if (!query.trim()) return;
 
+  //   setLoading(true);
+  //   try {
+  //     const response = await together.chat.completions.create({
+  //       model: "meta-llama/Meta-Llama-3-8B-Instruct-Turbo",
+  //       messages: [{"role": "system", "content": SYSTEM_PROMPT},
+  //         { role: "user", content: `Question: ${query}, Context: ${PDF_CONTEXT}` },
+  //       ],
+  //     });
+
+  //     setResponse(response.choices[0]?.message?.content || "No response available.");
+
+  //     // const res = await axios.post("http://localhost:8000/ask", { query });
+  //     // setResponse(res.data.response);
+  //   } catch (error) {
+  //     setResponse("Error fetching response. Please try again.");
+  //   }
+  //   setLoading(false);
+  // };
   const handleAskQuery = async () => {
     if (!query.trim()) return;
 
@@ -147,71 +171,121 @@ Extracurriculars
     try {
       const response = await together.chat.completions.create({
         model: "meta-llama/Meta-Llama-3-8B-Instruct-Turbo",
-        messages: [{"role": "system", "content": SYSTEM_PROMPT},
+        messages: [
+          { role: "system", content: SYSTEM_PROMPT },
           { role: "user", content: `Question: ${query}, Context: ${PDF_CONTEXT}` },
         ],
       });
 
       setResponse(response.choices[0]?.message?.content || "No response available.");
-
-      // const res = await axios.post("http://localhost:8000/ask", { query });
-      // setResponse(res.data.response);
     } catch (error) {
       setResponse("Error fetching response. Please try again.");
     }
     setLoading(false);
   };
+//   return (
+//     <motion.section 
+//       initial={{ opacity: 0 }}
+//       whileInView={{ opacity: 1 }}
+//       transition={{ duration: 0.8 }}
+//       className="py-20 bg-gray-50"
+//     >
+//       <div className="max-w-4xl mx-auto px-4">
+//         <h2 className="text-5xl font-bold text-gray-800 mb-8 text-center">Ask More About My self</h2>
 
-  return (
-    <motion.section 
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
-      className="py-20 bg-gray-50"
-    >
-      <div className="max-w-4xl mx-auto px-4">
-        <h2 className="text-5xl font-bold text-gray-800 mb-8 text-center">AI-Powered Resume Assistant</h2>
+//         <motion.p 
+//           className="text-lg text-gray-600 leading-relaxed"
+//           initial={{ y: 20 }}
+//           whileInView={{ y: 0 }}
+//           transition={{ duration: 0.7 }}
+//         >Ask Me Anything
+//         </motion.p>
 
-        <motion.p 
-          className="text-lg text-gray-600 leading-relaxed"
-          initial={{ y: 20 }}
-          whileInView={{ y: 0 }}
-          transition={{ duration: 0.7 }}
+//         {/* Query Input and Button */}
+//         <div className="mt-6">
+//           <input
+//             type="text"
+//             placeholder="Ask a question about my resume..."
+//             value={query}
+//             onChange={(e) => setQuery(e.target.value)}
+//             className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400"
+//           />
+//           <button
+//             onClick={handleAskQuery}
+//             className="mt-3 w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700"
+//             disabled={loading}
+//           >
+//             {loading ? "Fetching response..." : "Ask"}
+//           </button>
+//         </div>
+
+//         {/* AI Response Display */}
+//         {response && (
+//           <motion.div 
+//             initial={{ opacity: 0 }}
+//             animate={{ opacity: 1 }}
+//             transition={{ duration: 0.5 }}
+//             className="mt-6 p-4 border rounded-lg bg-white shadow"
+//           >
+//             <h3 className="text-lg font-semibold text-gray-800">AI Response:</h3>
+//             <p className="text-gray-600 mt-2">{response}</p>
+//           </motion.div>
+//         )}
+//       </div>
+//     </motion.section>
+//   );
+// }
+
+return (
+  <motion.section
+    initial={{ opacity: 0 }}
+    whileInView={{ opacity: 1 }}
+    transition={{ duration: 0.8 }}
+    className="py-20 bg-gray-50"
+  >
+    <div className="max-w-4xl mx-auto px-4">
+      <h2 className="text-5xl font-bold text-gray-800 mb-8 text-center">Ask More About Myself</h2>
+
+      <motion.p
+        className="text-lg text-gray-600 leading-relaxed"
+        initial={{ y: 20 }}
+        whileInView={{ y: 0 }}
+        transition={{ duration: 0.7 }}
+      >
+        Ask me anything related to my resume!
+      </motion.p>
+
+      <div className="mt-6">
+        <input
+          type="text"
+          placeholder="Ask a question about my resume..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400"
+        />
+        <button
+          onClick={handleAskQuery}
+          className="mt-3 w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700"
+          disabled={loading}
         >
-          I have integrated an AI-powered chatbot trained on my resume, allowing you to explore my skills, experience, and projects through interactive conversations.
-        </motion.p>
-
-        {/* Query Input and Button */}
-        <div className="mt-6">
-          <input
-            type="text"
-            placeholder="Ask a question about my resume..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400"
-          />
-          <button
-            onClick={handleAskQuery}
-            className="mt-3 w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700"
-            disabled={loading}
-          >
-            {loading ? "Fetching response..." : "Ask"}
-          </button>
-        </div>
-
-        {/* AI Response Display */}
-        {response && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="mt-6 p-4 border rounded-lg bg-white shadow"
-          >
-            <h3 className="text-lg font-semibold text-gray-800">AI Response:</h3>
-            <p className="text-gray-600 mt-2">{response}</p>
-          </motion.div>
-        )}
+          {loading ? "Fetching response..." : "Ask"}
+        </button>
       </div>
-    </motion.section>
-  );
-}
+
+      {response && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="mt-6 p-4 border rounded-lg bg-white shadow"
+        >
+          <h3 className="text-lg font-semibold text-gray-800">AI Response:</h3>
+          <div className="text-gray-600 mt-2">
+            <ReactMarkdown>{response}</ReactMarkdown>
+          </div>
+        </motion.div>
+      )}
+    </div>
+  </motion.section>
+);
+} 
