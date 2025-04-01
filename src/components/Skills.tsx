@@ -140,6 +140,22 @@
 
 
 
+
+
+
+
+
+
+
+
+
+// 
+
+
+
+
+
+
 import { motion } from 'framer-motion';
 import { Code2, PenTool as Tool, Users } from 'lucide-react';
 
@@ -196,7 +212,7 @@ const skillVariants = {
 
 export default function Skills() {
   return (
-    <section className="py-24 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200">
+    <section className="py-24 bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#38bdf8]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -205,7 +221,7 @@ export default function Skills() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-5xl font-bold text-black mb-4">
+          <h2 className="text-5xl font-bold text-white mb-4">
             My Skills
           </h2>
         </motion.div>
