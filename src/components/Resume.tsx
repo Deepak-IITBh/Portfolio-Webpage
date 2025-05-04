@@ -1,6 +1,6 @@
 // src/components/ResumeDownload.tsx
 import React from 'react';
-import resumePdf from '../assets/deepakde-Re.pdf';
+import resumePdf from '../assets/Resume_de.pdf';
 
 const ResumeDownload: React.FC = () => {
   const handleDownload = () => {
