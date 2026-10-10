@@ -1,0 +1,71 @@
+/* Ported from Pipeline.astro (scoping removed; class names are unique across the app). */
+.pipe {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-sunken);
+    padding: 16px;
+  }
+  .pipe__hint { display: flex; justify-content: space-between; gap: 12px; font-size: 0.7rem; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 14px; }
+  .pipe__hint-action { text-transform: none; letter-spacing: 0; }
+  html:not(.js) .pipe__hint-action { display: none; }
+
+  .pipe__nodes {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @media (min-width: 640px) {
+    .pipe__nodes { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  @media (min-width: 1180px) {
+    .pipe__nodes { grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 14px; }
+  }
+
+  .pipe__step { position: relative; display: flex; }
+
+  /* Connectors between stages (only on the single-row layout). */
+  @media (min-width: 1180px) {
+    .pipe__step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: -14px;
+      width: 14px;
+      height: 1px;
+      background: var(--line-strong);
+      transition: background-color 0.3s var(--ease);
+    }
+    .pipe__step.is-passed::after { background: var(--accent); }
+  }
+
+  .pnode {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+    width: 100%;
+    padding: 12px;
+    text-align: left;
+    border: 1px solid var(--line-strong);
+    border-radius: 8px;
+    background: var(--bg-elev);
+    transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease), transform 0.2s var(--ease);
+  }
+  .pnode:hover { border-color: var(--fg-3); }
+  .pnode[aria-pressed='true'] { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .is-passed .pnode { border-color: var(--accent-line); }
+  .pnode__idx { font-size: 0.66rem; color: var(--fg-3); }
+  .pnode[aria-pressed='true'] .pnode__idx { color: var(--accent); }
+  .pnode__label { font-size: var(--fs-sm); font-weight: 500; line-height: 1.3; }
+  .pnode__tech { font-size: 0.68rem; color: var(--fg-3); line-height: 1.4; }
+  .pnode__branch { display: grid; gap: 2px; margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--line-strong); font-size: 0.66rem; color: var(--fg-2); width: 100%; }
+
+  .pipe__panels { margin-top: 14px; }
+  .pipe__panel { padding: 14px 2px 2px; border-top: 1px solid var(--line); }
+  .pipe__panel + .pipe__panel { margin-top: 0; }
+  .js .pipe__panel:not(.is-active) { display: none; }
+  .js .pipe__panel.is-active { animation: panel-in 0.3s var(--ease); }
+  .pipe__panel-head { font-size: 0.72rem; color: var(--accent); margin-bottom: 4px; }
+  .pipe__panel-body { font-size: var(--fs-sm); color: var(--fg-2); max-width: 72ch; }
+
+  @keyframes panel-in { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }

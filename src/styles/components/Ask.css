@@ -1,0 +1,27 @@
+/* Ported from Ask.astro (scoping removed; class names are unique across the app). */
+.ask {
+    position: relative;
+    padding-block: clamp(6rem, 4rem + 6vw, 10rem);
+    background:
+      radial-gradient(60% 50% at 85% 20%, var(--glow), transparent 70%),
+      var(--bg-sunken);
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: 0px;
+  }
+  .ask__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; align-items: center; }
+  @media (min-width: 1040px) {
+    .ask__grid { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 72px; }
+  }
+
+  .ask__mark { display: flex; align-items: center; gap: 14px; font-size: 0.72rem; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.06em; }
+  .ask__mark span:first-child { color: var(--accent); }
+  .ask__rule { flex: 0 0 48px; height: 1px; background: var(--line-strong); }
+  .ask__title { margin-top: 20px; font-size: var(--fs-chapter); line-height: 0.98; letter-spacing: -0.045em; }
+  .ask__lead { margin-top: 22px; font-size: var(--fs-lg); line-height: 1.4; color: var(--fg-2); max-width: 30ch; letter-spacing: -0.015em; }
+
+  .ask__chain { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 0; margin-top: 32px; font-size: 0.74rem; }
+  .ask__chain li { display: inline-flex; align-items: center; color: var(--fg-2); }
+  .ask__chain li::after { content: '→'; margin: 0 10px; color: var(--fg-3); }
+  .ask__chain li:last-child::after { content: none; }
+  .ask__chain li:last-child { color: var(--accent); }
+  .ask__keys { margin-top: 22px; font-size: 0.8rem; color: var(--fg-3); }

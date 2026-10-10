@@ -1,4 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+/* Entry stylesheet: fonts, global tokens/base, then each component's styles (imported by the component). */
+@import '@fontsource-variable/geist';
+@import '@fontsource-variable/geist-mono';
+@import '@fontsource/instrument-serif/latin-400-italic.css';
+@import './styles/global.css';

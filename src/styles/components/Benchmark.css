@@ -1,0 +1,67 @@
+/* Ported from Benchmark.astro (scoping removed; class names are unique across the app). */
+.bench {
+    container-type: inline-size;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 18px;
+    background: var(--bg-elev);
+  }
+  .bench__head { display: grid; gap: 14px; margin-bottom: 20px; }
+  @container (min-width: 820px) {
+    .bench__head { grid-template-columns: 1fr auto; align-items: start; }
+  }
+  .bench__title { font-size: var(--fs-sm); font-weight: 500; }
+  .bench__sub { font-size: 0.72rem; color: var(--fg-3); margin-top: 2px; }
+  .bench__controls { display: flex; flex-wrap: wrap; gap: 8px; }
+  html:not(.js) .bench__controls { display: none; }
+
+  .seg { display: inline-flex; flex-wrap: wrap; padding: 2px; border: 1px solid var(--line-strong); border-radius: 8px; background: var(--bg-sunken); }
+  .seg__btn { font-size: 0.72rem; padding: 5px 9px; border-radius: 6px; color: var(--fg-3); transition: color 0.2s var(--ease), background-color 0.2s var(--ease); }
+  .seg__btn:hover { color: var(--fg); }
+  .seg__btn[aria-pressed='true'] { color: var(--fg); background: var(--bg-elev); box-shadow: 0 1px 2px rgb(0 0 0 / 0.08), 0 0 0 1px var(--line); }
+
+  .chart__rows { display: grid; gap: 10px; }
+  .chart__row, .chart__axis { display: grid; grid-template-columns: 112px 1fr 64px; gap: 12px; align-items: center; }
+  .chart__label { font-size: var(--fs-sm); color: var(--fg-2); }
+  .chart__track {
+    position: relative;
+    height: 22px;
+    background-image: linear-gradient(to right, var(--line) 1px, transparent 1px);
+    background-size: 25% 100%;
+    border-right: 1px solid var(--line);
+  }
+  .chart__bar {
+    position: absolute;
+    left: 0;
+    top: 3px;
+    bottom: 3px;
+    width: var(--w);
+    background: var(--bar);
+    border-radius: 0 4px 4px 0;
+    transition: width 0.6s var(--ease), background-color 0.3s var(--ease);
+  }
+  .is-best .chart__bar { background: var(--accent); }
+  .is-best .chart__label { color: var(--fg); font-weight: 500; }
+  .chart__value { font-size: 0.75rem; color: var(--fg-2); text-align: right; }
+  .is-best .chart__value { color: var(--fg); }
+  .chart__axis { margin-top: 6px; }
+  .chart__ticks { min-width: 0; display: flex; justify-content: space-between; font-size: 0.66rem; color: var(--fg-3); }
+  .chart__ticks span:first-child { transform: translateX(-2px); }
+
+  .bench__table { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 12px; }
+  .bench__table summary { font-size: 0.75rem; color: var(--fg-2); cursor: pointer; width: fit-content; }
+  .bench__table summary:hover { color: var(--fg); }
+  .table-wrap { overflow-x: auto; margin-top: 12px; }
+  .bench table { width: 100%; font-size: 0.8rem; min-width: 560px; }
+  .bench th, .bench td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .bench thead th { font-weight: 500; color: var(--fg-3); font-size: 0.72rem; }
+  .bench tbody th { font-weight: 500; }
+  .bench td.mono { font-size: 0.75rem; }
+  .bench__source { margin-top: 12px; font-size: 0.68rem; color: var(--fg-3); }
+
+  @media (max-width: 520px) {
+    .bench { padding: 14px 12px; }
+    .chart__row, .chart__axis { grid-template-columns: 80px minmax(0, 1fr) 50px; gap: 8px; }
+    .chart__label { font-size: 0.75rem; }
+    .chart__ticks span:nth-child(2), .chart__ticks span:nth-child(4) { visibility: hidden; }
+  }

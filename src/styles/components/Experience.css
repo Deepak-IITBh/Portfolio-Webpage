@@ -1,0 +1,89 @@
+/* Ported from Experience.astro (scoping removed; class names are unique across the app). */
+.timeline { display: grid; max-width: 1040px; }
+
+  .entry {
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr);
+    column-gap: 16px;
+    scroll-margin-top: 80px;
+  }
+  @media (min-width: 760px) {
+    .entry { grid-template-columns: 180px 20px minmax(0, 1fr); column-gap: 28px; }
+  }
+
+  .entry__when {
+    grid-column: 2;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 2px 10px;
+    color: var(--fg-2);
+  }
+  .entry__year {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(2.2rem, 1.6rem + 2vw, 3.4rem);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    color: var(--fg-3);
+    transition: color 0.3s var(--ease);
+  }
+  .is-current .entry__year, .entry:hover .entry__year { color: var(--accent); }
+  .entry__range { font-size: 0.72rem; }
+  .entry__kind { font-size: 0.7rem; color: var(--fg-3); }
+  @media (min-width: 760px) {
+    .entry__when { grid-column: 1; grid-row: 1; flex-direction: column; text-align: right; align-items: flex-end; gap: 6px; }
+  }
+
+  .entry__rail {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+  @media (min-width: 760px) {
+    .entry__rail { grid-column: 2; grid-row: 1; }
+  }
+  .entry__rail::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--line-strong);
+  }
+  .entry:first-child .entry__rail::before { top: 10px; }
+  .entry:last-child .entry__rail::before { bottom: auto; height: 10px; }
+  .entry__node {
+    position: relative;
+    margin-top: 6px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 1.5px solid var(--fg-3);
+  }
+  .is-current .entry__node { border-color: var(--live); background: var(--live); box-shadow: 0 0 0 4px color-mix(in srgb, var(--live) 18%, transparent); }
+  .is-edu .entry__node { border-radius: 2px; }
+
+  .entry__body { grid-column: 2; padding: 6px 0 44px; }
+  @media (min-width: 760px) {
+    .entry__body { grid-column: 3; padding-top: 0; }
+  }
+  .entry:last-child .entry__body { padding-bottom: 0; }
+
+  .entry__title { font-size: var(--fs-lg); letter-spacing: -0.02em; display: flex; flex-direction: column; gap: 2px; }
+  .entry__org { font-size: var(--fs-base); font-weight: 400; color: var(--fg-2); letter-spacing: -0.01em; }
+  .entry__now { display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 0.72rem; color: var(--live); }
+  .entry__summary { margin-top: 12px; color: var(--fg); max-width: 64ch; }
+  .entry__more { margin-top: 12px; }
+  .entry__more summary { display: inline-flex; gap: 8px; font-size: 0.72rem; color: var(--fg-3); cursor: pointer; list-style: none; }
+  .entry__more summary::-webkit-details-marker { display: none; }
+  .entry__more summary:hover { color: var(--accent); }
+  .entry__more summary span { display: inline-block; transition: transform 0.2s var(--ease); }
+  .entry__more[open] summary span { transform: rotate(45deg); }
+  .entry__points { margin-top: 10px; display: grid; gap: 6px; max-width: 70ch; }
+  .entry__points li { position: relative; padding-left: 18px; font-size: 0.93rem; color: var(--fg-2); }
+  .entry__points li::before { content: ''; position: absolute; left: 2px; top: 0.72em; width: 6px; height: 1px; background: var(--fg-3); }
+  .entry__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; margin-top: 16px; }
