@@ -1,0 +1,119 @@
+/* Ported from Console.astro (scoping removed; class names are unique across the app). */
+.inst {
+    position: relative;
+    border: 1px solid var(--line-strong);
+    border-radius: 16px;
+    background: var(--bg-elev);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .inst::before {
+    content: '';
+    position: absolute;
+    inset: -40% -20% auto auto;
+    width: 70%;
+    aspect-ratio: 1;
+    background: radial-gradient(closest-side, var(--glow), transparent);
+    pointer-events: none;
+  }
+
+  .inst__bar { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+  .inst__title { display: inline-flex; align-items: center; gap: 7px; font-size: var(--fs-xs); font-weight: 500; letter-spacing: 0; color: var(--fg-2); }
+  .inst__meta { font-size: 0.7rem; color: var(--fg-3); white-space: nowrap; }
+
+  .inst__form { position: relative; display: flex; align-items: center; gap: 10px; padding: 14px 16px 8px; }
+  .inst__prompt { color: var(--accent); font-size: var(--fs-md); line-height: 1; }
+  .inst__input:focus-visible { box-shadow: none; }
+  .inst__input { flex: 1; min-width: 0; border: 0; background: none; font-size: var(--fs-base); color: var(--fg); outline: none; padding: 4px 0; }
+  .inst__input::placeholder { color: var(--fg-3); }
+  .inst__input::-webkit-search-cancel-button { display: none; }
+  .inst__form:focus-within { box-shadow: inset 0 -1px 0 var(--accent-line); }
+
+  .inst__chips { position: relative; display: flex; flex-wrap: wrap; gap: 6px; padding: 6px 16px 4px; }
+  .chip { font-size: 0.72rem; padding: 5px 9px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--fg-2); background: var(--bg-elev); transition: color 0.2s var(--ease), border-color 0.2s var(--ease), background-color 0.2s var(--ease); }
+  .chip:hover { color: var(--fg); border-color: var(--fg-3); }
+  .chip[aria-pressed='true'] { color: var(--accent); border-color: var(--accent-line); background: var(--accent-soft); }
+
+  /* ── Work map ── */
+  .map { position: relative; margin: 4px 8px 0; }
+  .map__svg { width: 100%; height: auto; overflow: visible; }
+  .map__clusters ellipse { fill: var(--bg-sunken); stroke: var(--line); stroke-width: 1; stroke-dasharray: 2 3; }
+  .map__edges line { stroke: var(--line-strong); stroke-width: 0.7; opacity: 0.7; transition: stroke 0.3s var(--ease), opacity 0.3s var(--ease); }
+  .map__edges line.is-lit { stroke: var(--accent-line); stroke-width: 1.1; opacity: 1; }
+  .map__clusters text { font-family: var(--font-mono); font-size: 9.5px; fill: var(--fg-3); letter-spacing: 0.04em; text-transform: uppercase; }
+  .map__query rect { fill: var(--accent); }
+  .map__query text { font-family: var(--font-mono); font-size: 9px; fill: var(--accent); }
+  .map__rays line { stroke: var(--accent); stroke-width: 1; stroke-dasharray: 3 3; opacity: 0.7; }
+  .map__rays line.is-new { animation: ray 0.6s var(--ease) both; animation-delay: var(--i, 0ms); }
+  .map__ranks text { font-family: var(--font-mono); font-size: 10px; font-weight: 600; fill: var(--accent); }
+
+  .node { cursor: pointer; transition: opacity 0.3s var(--ease); }
+  .node__dot { fill: var(--bg-elev); stroke: var(--fg-3); stroke-width: 1.2; transition: fill 0.25s var(--ease), stroke 0.25s var(--ease); }
+  .node--case-study .node__dot { fill: var(--fg-2); stroke: var(--fg-2); }
+  .node__halo { fill: var(--accent-soft); opacity: 0; transition: opacity 0.3s var(--ease); }
+  .node__hit { fill: transparent; }
+  .node.is-dim { opacity: 0.38; }
+  .node.is-hit .node__dot { fill: var(--accent); stroke: var(--accent); }
+  .node.is-hit .node__halo { opacity: 1; }
+  .node:hover .node__dot { stroke: var(--fg); }
+  .node:hover { opacity: 1; }
+  .js .node { animation: node-in 0.5s var(--ease) both; animation-delay: var(--d); }
+
+  .map__tip {
+    position: absolute;
+    z-index: 2;
+    max-width: 240px;
+    padding: 6px 9px;
+    border-radius: 6px;
+    background: var(--fg);
+    color: var(--bg);
+    font-size: 0.7rem;
+    line-height: 1.35;
+    pointer-events: none;
+    transform: translate(-50%, calc(-100% - 12px));
+    white-space: nowrap;
+  }
+  .map__tip span { display: block; opacity: 0.7; }
+
+  .inst__trace {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0 16px;
+    padding: 8px 0;
+    border-top: 1px dashed var(--line-strong);
+    font-size: 0.68rem;
+    color: var(--fg-3);
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .inst__trace span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .inst__trace .inst__time { flex: none; color: var(--fg-2); }
+
+  .hits { position: relative; display: grid; padding: 0 8px 10px; min-height: 7.5rem; }
+  .hits .hit {
+    display: grid;
+    grid-template-columns: 16px minmax(0, 1fr) auto auto;
+    align-items: baseline;
+    gap: 10px;
+    padding: 7px 8px;
+    border-radius: 8px;
+    transition: background-color 0.15s var(--ease);
+  }
+  .hits .hit:hover, .hits .hit:focus-visible { background: var(--bg-sunken); }
+  .hits .is-new { animation: line-in 0.35s var(--ease) both; animation-delay: calc(120ms + var(--i) * 50ms); }
+  .hits .hit__rank { font-size: 0.72rem; color: var(--accent); font-weight: 600; }
+  .hits .hit__title { font-size: var(--fs-sm); font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .hits .hit__kind { font-size: 0.68rem; color: var(--fg-3); }
+  .hits .hit__score { font-size: 0.68rem; color: var(--fg-3); min-width: 3ch; text-align: right; }
+  .hits .empty { font-size: var(--fs-sm); color: var(--fg-3); padding: 8px; }
+
+  @keyframes node-in { from { opacity: 0; } }
+  @keyframes ray { from { stroke-dashoffset: 40; opacity: 0; } }
+  @keyframes line-in { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+
+  @media (max-width: 479px) {
+    .inst__meta, .inst__kbd { display: none; }
+    .hits .hit__kind { display: none; }
+  }

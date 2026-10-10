@@ -1,0 +1,257 @@
+/* Ported from Nav.astro (scoping removed; class names are unique across the app). */
+/* ── Floating capsule ── */
+  .capsule {
+    position: fixed;
+    z-index: 50;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px;
+    border: 1px solid var(--line-strong);
+    border-radius: 18px;
+    background: color-mix(in srgb, var(--bg-elev) 72%, transparent);
+    backdrop-filter: saturate(1.4) blur(18px);
+    -webkit-backdrop-filter: saturate(1.4) blur(18px);
+    box-shadow: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 10px 30px -18px rgb(0 0 0 / 0.6);
+    transition: background-color 0.35s var(--ease), box-shadow 0.35s var(--ease), border-color 0.35s var(--ease);
+  }
+  .nav.is-scrolled .capsule {
+    background: color-mix(in srgb, var(--bg-elev) 88%, transparent);
+    box-shadow: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 18px 44px -18px rgb(0 0 0 / 0.75);
+  }
+
+  .mark {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 3px;
+    height: 40px;
+    padding: 0 12px 0 14px;
+    border-radius: 13px;
+    font-weight: 600;
+    font-size: 1.02rem;
+    letter-spacing: -0.035em;
+    line-height: 40px;
+    transition: background-color 0.2s var(--ease);
+  }
+  .mark:hover { background: var(--bg-sunken); }
+  .mark__lamp {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--glow), 0 0 4px var(--accent);
+    animation: lamp 4.5s ease-in-out infinite;
+  }
+
+  .sep { width: 1px; height: 22px; background: var(--line-strong); margin-inline: 4px; }
+
+  /* Icons with a gliding "lamp" indicator */
+  .nav__icons { position: relative; }
+  .nav__icons ul { position: relative; display: flex; gap: 2px; }
+  .glide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--bg-sunken);
+    box-shadow: inset 0 0 0 1px var(--line);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .glide::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 3px;
+    width: 4px;
+    height: 4px;
+    margin-left: -2px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px 1px var(--accent);
+    transition: opacity 0.25s var(--ease);
+  }
+  .glide.is-ready { transition: transform 0.55s cubic-bezier(0.34, 1.32, 0.5, 1), opacity 0.3s var(--ease); }
+  .glide.is-shown { opacity: 1; }
+  .glide.is-preview::after { opacity: 0.35; }
+
+  .nav__tools { display: flex; align-items: center; gap: 2px; }
+
+  .ico {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    color: var(--fg-3);
+    transition: color 0.2s var(--ease), transform 0.25s var(--ease);
+  }
+  .ico svg { transition: transform 0.3s cubic-bezier(0.34, 1.4, 0.5, 1); }
+  .ico:hover, .ico:focus-visible { color: var(--fg); }
+  .ico:hover svg { transform: translateY(-1.5px); }
+  .ico:active { transform: scale(0.92); }
+  .ico.is-active { color: var(--fg); }
+  .nav__tools .ico:hover { background: var(--bg-sunken); }
+
+  /* Labels: the accessible name, shown on hover / keyboard focus. */
+  .tip {
+    position: absolute;
+    top: calc(100% + 14px);
+    left: 50%;
+    padding: 5px 9px;
+    border-radius: 7px;
+    background: var(--fg);
+    color: var(--bg);
+    font-size: 0.72rem;
+    font-weight: 500;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, -4px);
+    transition: opacity 0.18s var(--ease), transform 0.18s var(--ease);
+  }
+  .tip__kbd { margin-left: 6px; font-family: var(--font-mono); font-size: 0.66rem; opacity: 0.65; }
+  .ico:hover .tip, .ico:focus-visible .tip { opacity: 1; transform: translate(-50%, 0); }
+
+  /* Show the icon for the theme you would switch to. */
+  .ico .icon-moon { display: none; }
+  :root[data-theme='light'] .ico .icon-sun { display: none; }
+  :root[data-theme='light'] .ico .icon-moon { display: block; }
+
+  /* Phones: the capsule carries the wordmark + tools; sections live in the dock. */
+  @media (max-width: 759px) {
+    .capsule { left: 10px; right: 10px; transform: none; justify-content: space-between; top: 10px; }
+    .nav__icons, .sep--wide { display: none; }
+  }
+
+  /* ── Position rail (wide screens) ── */
+  .rail {
+    position: fixed;
+    z-index: 40;
+    top: 50%;
+    right: 18px;
+    transform: translate(8px, -50%);
+    display: none;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+  }
+  @media (min-width: 1360px) {
+    .rail { display: block; }
+  }
+  .rail.is-shown { opacity: 1; transform: translate(0, -50%); pointer-events: auto; }
+  .rail ol { display: grid; gap: 2px; }
+  .rail__item { display: flex; align-items: center; justify-content: flex-end; gap: 10px; height: 18px; padding-left: 12px; }
+  .rail__tick {
+    width: 14px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--line-strong);
+    transition: width 0.4s cubic-bezier(0.34, 1.3, 0.5, 1), background-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  }
+  .rail__item--sub .rail__tick { width: 7px; }
+  .rail__item--sub { height: 14px; }
+  .rail__label {
+    padding: 3px 8px;
+    border: 1px solid var(--line-strong);
+    border-radius: 6px;
+    background: var(--bg-elev);
+    font-size: 0.66rem;
+    color: var(--fg-3);
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateX(6px);
+    transition: opacity 0.25s var(--ease), transform 0.25s var(--ease), color 0.2s var(--ease);
+  }
+  .rail__item:hover .rail__tick { background: var(--fg-3); width: 20px; }
+  .rail__item:hover .rail__label, .rail__item:focus-visible .rail__label { opacity: 1; transform: none; color: var(--fg); }
+  .rail:hover .rail__label { opacity: 0.9; transform: none; }
+  .rail__item.is-parent .rail__tick { background: var(--fg-3); width: 18px; }
+  .rail__item.is-active .rail__tick { width: 28px; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+  /* The active label appears briefly when you enter a section (and on hover), then only the tick stays. */
+  .rail.is-flash .rail__item.is-active .rail__label, .rail:hover .rail__item.is-active .rail__label { opacity: 1; transform: none; color: var(--fg); border-color: var(--accent-line); }
+
+  /* ── Phone dock ── */
+  .dock {
+    position: fixed;
+    z-index: 60;
+    left: 50%;
+    bottom: calc(10px + env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    width: min(440px, calc(100vw - 20px));
+    padding: 6px;
+    border: 1px solid var(--line-strong);
+    border-radius: 20px;
+    background: color-mix(in srgb, var(--bg-elev) 88%, transparent);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 16px 40px -16px rgb(0 0 0 / 0.5);
+  }
+  .dock ul { display: grid; grid-template-columns: repeat(6, 1fr); }
+  .dock__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 7px 0 6px;
+    border-radius: 14px;
+    font-size: 0.6rem;
+    color: var(--fg-3);
+    transition: color 0.2s var(--ease), background-color 0.2s var(--ease);
+  }
+  .dock__item.is-active { color: var(--accent); background: var(--accent-soft); }
+  @media (min-width: 760px) {
+    .dock { display: none; }
+  }
+
+  /* ── Floating ask button ── */
+  .fab {
+    position: fixed;
+    z-index: 55;
+    right: 24px;
+    bottom: 24px;
+    display: inline-flex;
+    align-items: center;
+    height: 52px;
+    padding: 0;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    background: var(--bg-elev);
+    color: var(--fg);
+    box-shadow: 0 12px 36px -12px rgb(0 0 0 / 0.55);
+    opacity: 0;
+    transform: translateY(12px);
+    pointer-events: none;
+    transition: opacity 0.35s var(--ease), transform 0.35s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s var(--ease);
+  }
+  .fab.is-shown { opacity: 1; transform: none; pointer-events: auto; }
+  .fab__icon { display: grid; place-items: center; width: 50px; height: 50px; border-radius: 50%; color: var(--accent); }
+  .fab__icon svg { animation: spin 14s linear infinite; }
+  .fab__label {
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    transition: max-width 0.35s var(--ease), padding 0.35s var(--ease);
+  }
+  .fab:hover, .fab:focus-visible { border-color: var(--accent-line); box-shadow: 0 12px 36px -12px rgb(0 0 0 / 0.55), 0 0 0 6px var(--accent-soft); }
+  .fab:hover .fab__label, .fab:focus-visible .fab__label { max-width: 140px; padding-right: 18px; }
+  @media (max-width: 759px) {
+    .fab { right: 14px; bottom: calc(92px + env(safe-area-inset-bottom)); height: 46px; }
+    .fab__icon { width: 44px; height: 44px; }
+    .fab__label { display: none; }
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes lamp { 0%, 100% { box-shadow: 0 0 8px var(--glow), 0 0 3px var(--accent); } 50% { box-shadow: 0 0 14px var(--glow), 0 0 6px var(--accent); } }
+  @media (prefers-reduced-motion: reduce) {
+    .fab__icon svg, .mark__lamp { animation: none; }
+  }

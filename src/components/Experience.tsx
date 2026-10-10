@@ -1,153 +1,59 @@
-// import { motion } from 'framer-motion';
-// import { Briefcase } from 'lucide-react';
+import { Chapter } from './Chapter';
+import { Icon } from './Icon';
+import { experience } from '../data/site';
+import '../styles/components/Experience.css';
 
-// const experiences = [
-//   {
-//     title: "Computer Vision Intern",
-//     company: "IIT Bhilai",
-//     duration: "May 2024 - Jul 2024",
-//     details: [
-//       "Collaborated on crater detection using the Segment Anything Model (SAM) and YOLOv8",
-//       "Applied advanced deep learning techniques for precise segmentation",
-//       "Focused on optimizing model performance for universal applicability"
-//     ]
-//   },
-//   {
-//     title: "Data Science Intern",
-//     company: "Encryptix",
-//     duration: "May 2024 - Jun 2024",
-//     details: [
-//       "Data preprocessing, feature engineering, model building",
-//       "Evaluation with Random Forest and Gradient Boosting",
-//       "Deployed models on AWS (S3, EC2)"
-//     ]
-//   }
-// ];
-
-// export default function Experience() {
-//   return (
-//     <section className="py-20 bg-white">
-//       <div className="max-w-4xl mx-auto px-4">
-//         <motion.h2 
-//           initial={{ opacity: 0, y: 20 }}
-//           whileInView={{ opacity: 1, y: 0 }}
-//           transition={{ duration: 0.5 }}
-//           className="text-5xl font-bold text-center mb-12"
-//         >
-//           Experience
-//         </motion.h2>
-        
-//         <div className="space-y-8">
-//           {experiences.map((exp, index) => (
-//             <motion.div
-//               key={index}
-//               initial={{ opacity: 0, x: -20 }}
-//               whileInView={{ opacity: 1, x: 0 }}
-//               transition={{ duration: 0.5, delay: index * 0.1 }}
-//               className="bg-gray-50 rounded-lg p-6 shadow-lg"
-//             >
-//               <div className="flex items-start gap-4">
-//                 <div className="p-2 bg-blue-100 rounded-lg">
-//                   <Briefcase className="text-blue-600" />
-//                 </div>
-//                 <div>
-//                   <h3 className="text-xl font-bold">{exp.title}</h3>
-//                   <p className="text-gray-600">{exp.company}</p>
-//                   <p className="text-sm text-gray-500 mb-4">{exp.duration}</p>
-//                   <ul className="list-disc list-inside space-y-2">
-//                     {exp.details.map((detail, i) => (
-//                       <li key={i} className="text-gray-700">{detail}</li>
-//                     ))}
-//                   </ul>
-//                 </div>
-//               </div>
-//             </motion.div>
-//           ))}
-//         </div>
-//       </div>
-//     </section>
-//   );
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-import { motion } from 'framer-motion';
-import { Briefcase } from 'lucide-react';
-
-const experiences = [
-  {
-    title: "Computer Vision Intern",
-    company: "IIT Bhilai",
-    duration: "May 2024 - Jul 2024",
-    details: [
-      "Collaborated on crater detection using the Segment Anything Model (SAM) and YOLOv8",
-      "Applied advanced deep learning techniques for precise segmentation",
-      "Focused on optimizing model performance for universal applicability"
-    ]
-  },
-  {
-    title: "Data Science Intern",
-    company: "Encryptix",
-    duration: "May 2024 - Jun 2024",
-    details: [
-      "Data preprocessing, feature engineering, model building",
-      "Evaluation with Random Forest and Gradient Boosting",
-      "Deployed models on AWS (S3, EC2)"
-    ]
-  }
-];
-
-export default function Experience() {
+export function Experience() {
   return (
-    <section className="py-20 bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900 text-white">
-      <div className="max-w-4xl mx-auto px-4">
-        <motion.h2 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-5xl font-bold text-center mb-12"
-        >
-          Experience
-        </motion.h2>
-        
-        <div className="space-y-8">
-          {experiences.map((exp, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-gray-700 rounded-lg p-6 shadow-lg"
+    <section className="section" id="experience" aria-labelledby="experience-title">
+      <div className="container">
+        <Chapter id="experience" index="02" label="Experience" title="Where I’ve" accent="worked" intro="Data → research → AI, full-time." />
+
+        <ol className="timeline">
+          {experience.map((r) => (
+            <li
+              key={r.id}
+              className={['entry', r.current ? 'is-current' : '', r.kind === 'Education' ? 'is-edu' : ''].filter(Boolean).join(' ')}
+              id={`exp-${r.id}`}
+              data-reveal
             >
-              <div className="flex items-start gap-4">
-                <div className="p-2 bg-yellow-500 rounded-lg">
-                  <Briefcase className="text-black" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-white">{exp.title}</h3>
-                  <p className="text-gray-300">{exp.company}</p>
-                  <p className="text-sm text-gray-400 mb-4">{exp.duration}</p>
-                  <ul className="list-disc list-inside space-y-2">
-                    {exp.details.map((detail, i) => (
-                      <li key={i} className="text-gray-200">{detail}</li>
-                    ))}
-                  </ul>
-                </div>
+              <div className="entry__when">
+                <span className="entry__year" aria-hidden="true">{r.start.split(' ')[1]}</span>
+                <span className="mono entry__range">{r.start} — {r.end}</span>
+                <span className="mono entry__kind">{r.kind}</span>
               </div>
-            </motion.div>
+              <div className="entry__rail" aria-hidden="true"><span className="entry__node" /></div>
+              <div className="entry__body">
+                <h3 className="entry__title">
+                  {r.title}
+                  <span className="entry__org">{r.org}{r.place ? `, ${r.place}` : ''}</span>
+                </h3>
+                {r.current && (
+                  <p className="entry__now mono"><span className="live-dot" aria-hidden="true" />Current role</p>
+                )}
+                <p className="entry__summary">{r.summary}</p>
+                {r.points.length > 0 && (
+                  <details className="entry__more">
+                    <summary className="mono">What I did <span aria-hidden="true">+</span></summary>
+                    <ul className="entry__points">
+                      {r.points.map((pt) => <li key={pt}>{pt}</li>)}
+                    </ul>
+                  </details>
+                )}
+                {(r.stack.length > 0 || r.credential) && (
+                  <div className="entry__foot">
+                    {r.stack.length > 0 && <ul className="tag-list">{r.stack.map((s) => <li className="tag" key={s}>{s}</li>)}</ul>}
+                    {r.credential && (
+                      <a className="arrow-link" href={r.credential} target="_blank" rel="noopener noreferrer">
+                        Certificate <Icon name="arrow" size={14} /><span className="sr-only">(opens in a new tab)</span>
+                      </a>
+                    )}
+                  </div>
+                )}
+              </div>
+            </li>
           ))}
-        </div>
+        </ol>
       </div>
     </section>
   );

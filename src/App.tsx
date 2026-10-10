@@ -1,22 +1,34 @@
-import React from 'react';
-import Hero from './components/Hero';
-import About from './components/About';
-import Projects from './components/Projects';
-import Experience from './components/Experience';
-import Skills from './components/Skills';
-import ResumeDownload from './components/Resume';
-import Achievements from './/components/Achievements';
+import { Nav } from './components/Nav';
+import { Hero } from './components/Hero';
+import { Ask } from './components/Ask';
+import { Work } from './components/Work';
+import { Experience } from './components/Experience';
+import { Capabilities } from './components/Capabilities';
+import { About } from './components/About';
+import { Contact } from './components/Contact';
+import { Footer } from './components/Footer';
+import { Palette } from './components/Palette';
+import { useReveal } from './hooks/useReveal';
 
 function App() {
+  useReveal();
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Hero />
-      <About />
-      <Experience />
-      <Projects />
-      <Skills />
-      <Achievements />
-    </div>
+    <>
+      <a className="skip-link" href="#main">Skip to content</a>
+      <Nav />
+      <main id="main">
+        <Hero />
+        <Ask />
+        <Work />
+        <Experience />
+        <Capabilities />
+        <About />
+        <Contact />
+      </main>
+      <Footer />
+      <Palette />
+    </>
   );
 }
 

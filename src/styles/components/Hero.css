@@ -1,0 +1,200 @@
+/* Ported from Hero.astro (scoping removed; class names are unique across the app). */
+.hero {
+    --lx: 40%;
+    --ly: 34%;
+    position: relative;
+    min-height: min(100svh, 980px);
+    display: flex;
+    isolation: isolate;
+    overflow: hidden;
+    overflow: clip; /* clip, not a scroll container, so the scroll-linked recede tracks the page */
+    padding-block: calc(76px + clamp(1rem, 0.5rem + 2vw, 2.25rem)) clamp(2.5rem, 1.5rem + 3vw, 4rem);
+    border-bottom: 1px solid var(--line);
+  }
+
+  /* ── Lamp-lit blueprint ── */
+  .hero__stage { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+  .hero__grid, .hero__blueprint { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .hero__grid path { stroke: var(--line); stroke-width: 1; }
+  .hero__grid {
+    opacity: 0.55;
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 85%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 85%);
+  }
+  .hero__blueprint {
+    mask-image: radial-gradient(360px circle at var(--lx) var(--ly), #000 0%, rgb(0 0 0 / 0.55) 45%, transparent 100%);
+    -webkit-mask-image: radial-gradient(360px circle at var(--lx) var(--ly), #000 0%, rgb(0 0 0 / 0.55) 45%, transparent 100%);
+  }
+  .hero__blueprint rect, .hero__blueprint circle, .hero__blueprint path {
+    fill: none;
+    stroke: var(--fg-3);
+    stroke-width: 1.2;
+  }
+  .hero__blueprint .bp-fill { fill: var(--fg-3); }
+  .hero__blueprint .bp-hot { fill: var(--accent-soft); stroke: var(--accent); }
+  .hero__blueprint .bp-scan { fill: var(--accent-soft); stroke: var(--accent-line); }
+  .hero__blueprint .bp-cross { stroke: var(--accent); }
+  .hero__blueprint text { font-family: var(--font-mono); font-size: 12px; fill: var(--fg-2); }
+  .hero__blueprint .bp-note { font-size: 11px; fill: var(--accent); letter-spacing: 0.02em; }
+
+  /* The blueprint is a pointer-driven reveal; on phones keep just the lamp glow and grid. */
+  @media (max-width: 759px) {
+    .hero__blueprint { display: none; }
+  }
+
+  .hero__light {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(520px circle at var(--lx) var(--ly), var(--glow), transparent 70%);
+  }
+
+  .hero__inner { position: relative; display: flex; flex-direction: column; }
+
+  .hero__top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px 12px; }
+  .hero__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 12px 6px 10px;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    font-size: 0.8rem;
+    color: var(--fg-2);
+    background: color-mix(in srgb, var(--bg-elev) 80%, transparent);
+  }
+  .hero__clock { font-size: 0.72rem; color: var(--fg-3); }
+
+  /* ── Name ── */
+  .hero__name { margin-top: auto; padding-top: clamp(2.5rem, 1rem + 6vh, 5rem); }
+  .hero__word {
+    display: inline-flex;
+    align-items: baseline;
+    font-size: clamp(4.25rem, 1.2rem + 12.4vw, 12rem);
+    font-weight: 600;
+    line-height: 0.8;
+    letter-spacing: -0.07em;
+    margin-left: -0.055em;
+  }
+  .hero__letter { display: inline-block; }
+  .js .hero__letter { animation: rise 1s var(--ease) both; animation-delay: calc(var(--i) * 50ms); }
+
+  .hero__lamp {
+    position: relative;
+    width: 0.125em;
+    height: 0.125em;
+    margin-left: 0.05em;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0.1em var(--glow), 0 0 0.6em var(--glow);
+  }
+  .hero__lamp::after {
+    content: '';
+    position: absolute;
+    inset: -0.22em;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, var(--accent-soft), transparent);
+    animation: breathe 4.5s ease-in-out infinite;
+  }
+  .js .hero__lamp { animation: ignite 1.2s var(--ease) both; animation-delay: 380ms; }
+
+  /* ── Statement + side ── */
+  .hero__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px 64px;
+    margin-top: clamp(2.25rem, 1.25rem + 2.6vw, 3.5rem);
+    align-items: end;
+  }
+  @media (min-width: 980px) {
+    .hero__body { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
+  }
+
+  .hero__statement {
+    font-size: clamp(1.75rem, 1rem + 2.6vw, 3.1rem);
+    font-weight: 500;
+    line-height: 1.06;
+    letter-spacing: -0.035em;
+  }
+  .hero__line { display: block; }
+  .rotator { display: block; height: 1.18em; overflow: hidden; margin-block: 0.02em; }
+  .rotator__track { display: flex; flex-direction: column; }
+  .rotator__item {
+    display: block;
+    height: 1.18em;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.14em;
+    line-height: 1.04;
+    letter-spacing: -0.015em;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .js .rotator__track { animation: rotate-words 9s var(--ease) infinite; animation-delay: 1.4s; }
+
+  .hero__role { font-size: 0.82rem; color: var(--fg); letter-spacing: -0.01em; }
+  .hero__summary { margin-top: 10px; font-size: var(--fs-base); line-height: 1.6; color: var(--fg-2); max-width: 46ch; }
+  .hero__actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+  .btn--icon { width: 38px; padding: 0; justify-content: center; }
+
+  /* ── Proof strip ── */
+  .proof {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: clamp(2.75rem, 1.75rem + 3.5vw, 4.5rem);
+    border-top: 1px solid var(--line-strong);
+  }
+  @media (min-width: 860px) {
+    .proof { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+  .proof__item {
+    display: grid;
+    gap: 4px;
+    padding: 18px 16px 4px 0;
+    transition: color 0.2s var(--ease);
+  }
+  .proof li + li .proof__item { padding-left: 16px; }
+  .proof li + li { border-left: 1px solid var(--line); }
+  @media (max-width: 859px) {
+    .proof li:nth-child(3) { border-left: 0; }
+    .proof li:nth-child(3) .proof__item { padding-left: 0; }
+    .proof li:nth-child(n + 3) { border-top: 1px solid var(--line); }
+  }
+  .proof__value { font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.25rem); font-weight: 500; letter-spacing: -0.04em; line-height: 1; transition: color 0.2s var(--ease); }
+  .proof__label { font-size: 0.85rem; color: var(--fg-2); }
+  .proof__note { font-size: 0.68rem; color: var(--fg-3); }
+  .proof__item:hover .proof__value { color: var(--accent); }
+  .proof__value { display: inline-block; transition: color 0.2s var(--ease), transform 0.4s var(--ease-spring); transform-origin: left bottom; }
+  .proof__item:hover .proof__value { transform: scale(1.04); }
+
+  @keyframes rise { from { opacity: 0; transform: translateY(0.22em); } to { opacity: 1; transform: none; } }
+  @keyframes ignite {
+    0% { opacity: 0; transform: scale(0.4); }
+    60% { opacity: 1; transform: scale(1.25); }
+    100% { opacity: 1; transform: none; }
+  }
+  @keyframes breathe { 0%, 100% { opacity: 0.6; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.15); } }
+  @keyframes rotate-words {
+    0%, 28% { transform: translateY(0); }
+    33%, 61% { transform: translateY(-1.18em); }
+    66%, 94% { transform: translateY(-2.36em); }
+    100% { transform: translateY(-3.54em); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rotator__track { animation: none !important; }
+  }
+
+  /* As the hero scrolls away it recedes: a slight fade, lift and scale (scroll-linked, where supported). */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .hero__inner {
+        animation: recede linear both;
+        animation-timeline: view();
+        animation-range: exit 0% exit 85%;
+      }
+      @keyframes recede {
+        to { opacity: 0.2; transform: translate3d(0, -5vh, 0) scale(0.97); }
+      }
+    }
+  }
