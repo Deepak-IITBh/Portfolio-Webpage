@@ -41,6 +41,8 @@ export interface Role {
   points: string[];
   stack: string[];
   credential?: string;
+  /** Link text for `credential` (defaults to "Certificate"). */
+  credentialLabel?: string;
 }
 
 export const experience: Role[] = [
@@ -103,6 +105,8 @@ export const experience: Role[] = [
     summary: 'Coursework and projects across machine learning, deep learning, NLP and computer vision.',
     points: [],
     stack: [],
+    credential: '/Provisional_Certificate.pdf',
+    credentialLabel: 'Provisional Certificate',
   },
 ];
 

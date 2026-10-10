@@ -45,7 +45,7 @@ export function Experience() {
                     {r.stack.length > 0 && <ul className="tag-list">{r.stack.map((s) => <li className="tag" key={s}>{s}</li>)}</ul>}
                     {r.credential && (
                       <a className="arrow-link" href={r.credential} target="_blank" rel="noopener noreferrer">
-                        Certificate <Icon name="arrow" size={14} /><span className="sr-only">(opens in a new tab)</span>
+                        {r.credentialLabel ?? 'Certificate'} <Icon name="arrow" size={14} /><span className="sr-only">(opens in a new tab)</span>
                       </a>
                     )}
                   </div>
